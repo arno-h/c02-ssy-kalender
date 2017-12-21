@@ -12,7 +12,19 @@ router.patch('/:userId', addCalendarToUser);
 let userCollection = db.getCollection('users');
 
 function getAllUsers(request, response) {
-    let userObjects = userCollection.find();
+    let userObjects;
+    if ('name' in request.query) {
+        userObjects = userCollection.where(searchForName);
+
+        // Verschachtelte Funktion, damit wir auf request.query.name zugreifen können
+        function searchForName(user) {
+            return (user.name === request.query.name);
+        }
+
+    } else {
+        userObjects = userCollection.find();
+    }
+
     response.json(userObjects);
 }
 

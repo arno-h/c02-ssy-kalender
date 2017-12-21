@@ -11,7 +11,20 @@ router.get('/:eventId', getSingleEvent);
 let eventCollection = db.getCollection('events');
 
 function getAllEvents(request, response) {
-    let events = eventCollection.find();
+    let events;
+
+    if ('participant' in request.query) {
+        // wichtig: query-Parameter ist String, ID ist aber Integer --> ParseInt
+        let participant = parseInt(request.query.participant);
+        events = eventCollection.where(participantIncluded);
+        // verschachtelte Funktion, um auf Variable participant Zugriff zu haben
+        function participantIncluded(ev) {
+            return ev.participants.includes(participant);
+        }
+    } else {
+        events = eventCollection.find();
+    }
+
     response.json(events);
 }
 
