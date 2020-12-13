@@ -1,7 +1,13 @@
 # Kalender-Beispiel
 
-Ein einfaches Kalender-Service, das in der Lage ist,
-ein- oder mehrere Kalender zu verwalten.
+Ein einfaches Kalender-Service, das in der Lage ist, ein- oder mehrere Kalender
+zu verwalten. Es besteht aus drei **getrennten** Services, die nicht gegenseitig
+auf ihre Datenbanken zugreifen können: einem User-Service, einem Kalender-Service
+und einem Event-Service.
+
+Zwar laufen alle Services im selben NodeJS-Server, aber das ist aber nur eine
+Vereinfachung für das Starten/Stoppen etc. im Beispiel. Behandeln Sie die
+Services so, als wären sie völlig voneinander getrennt, auf verschiedenen Rechnern.
 
 ## Aufgaben
 
@@ -9,33 +15,34 @@ Hinweise:
  
 * generell lassen wir die Fehler-Behandlungen weg, es sei denn,
   es ist explizit in der Aufgabenstellung gefordert.
-* Achten Sie darauf in der Datenbank immer die Objekte zu haben
-  (auch für Referenzen), aber über die Schnittstelle nur IDs zu verarbeiten.
+* Achten Sie darauf in der Datenbank passende Objekte zu haben,
+  aber über die Schnittstelle nur IDs zu verarbeiten.
+* Typischerweise retournieren Funktionen die betreffende Ressource(n)
+  (trifft sowohl auf GET als auch auf POST/DELETE/PATCH zu).
  
 ### Basis-Funktionen
 
-* Funktionen/Endpunkte für Personen:
+* Funktionen/Endpunkte für **User-Service**:
   * `GET /users/` ... alle Personen auflisten
   * `GET /users/17` ... eine Person auslesen
-  * `POST /users/` ... neue Person anlegen;
-   Daten/Parameter:
+  * `POST /users/` ... neue Person anlegen; Daten/Parameter:
     * `name` ... Name der Person
   * `PATCH /users/17` ... wir "missbrauchen" PATCH, um einen neuen Kalender hinzuzufügen;
-    (Wagemutige können ja versuchen einen Teil von RFC 6902 umzusetzen :o) -
+    (Wagemutige können ja versuchen einen Teil von RFC 6902 umzusetzen :o)
     Daten/Parameter:
     * `calendar` ... ID des Kalenders
 
-* Funktionen/Endpunkte für Kalender:
+* Funktionen/Endpunkte für **Kalender-Service**:
   * `GET /calendars/` ... alle Kalender auflisten
   * `GET /calendar/13` ... einen Kalender auslesen
   * `POST /calendar/` ... neuen Kalender anlegen;
    Daten/Parameter:
     * `name` ... Names des Kalenders
-    * `owner` ... User-ID der EigentümerIn des Kalenders;
+    * `owner` ... User-ID der Eigentümer_in des Kalenders;
                   es soll auch gleich per PATCH des User-Services
                   der neu erzeugte Kalender beim User-Objekt eingetragen werden.
 
-* Funktionen/Endpunkte für Ereignisse:
+* Funktionen/Endpunkte für **Event-Service**:
   * `GET /events/` ... alle Ereignisse auflisten
   * `GET /events/16` ... ein Ereignis auslesen
   * `POST /events/` ... neues Ereignis anlegen; Daten/Parameter:
@@ -79,3 +86,9 @@ Format haben:
 
 Sie sollten einen Fehlerfall abfangen: nämlich, dass die Namenssuche
 keinen Treffer in der Datenbank liefert. 
+
+## Lösung
+
+Im Branch loesung finden Sie die Lösung schrittweise ausprogrammiert.
+Schauen Sie sich die Commits einzeln an, um eine Idee für das schrittweise
+Vorgehen zu erhalten.
