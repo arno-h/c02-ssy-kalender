@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 // Load routes into variables
-const index = require('./routes/index');
+const index = require('./services/index');
 
 // Routes
 app.use('/', index);
